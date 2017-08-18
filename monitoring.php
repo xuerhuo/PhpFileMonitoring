@@ -14,12 +14,17 @@ foreach ($files as $file){
     $data[$file] = md5_file($file);
 }
 foreach($data as $key=>$value){
-	if(empty($pre_data[$key])){
-		echo date("Y-m-d H:i:s",time())."创建文件:".$key."\r\n";
-		continue;
-	}elseif($value!=$pre_data[$key]){
-		echo date("Y-m-d H:i:s",time())."修改文件:".$key."\r\n";
-	}
+    if(empty($pre_data[$key])){
+        echo date("Y-m-d H:i:s",time())."创建文件:".$key."\r\n";
+        continue;
+    }elseif($value!=$pre_data[$key]){
+        echo date("Y-m-d H:i:s",time())."修改文件:".$key."\r\n";
+    }
+}
+foreach($pre_data as $key=>$value){
+    if(empty($data[$key])){
+        echo date("Y-m-d H:i:s",time())."删除文件:".$key."\r\n";
+    }
 }
 file_put_contents($savepath.'scan.dat',json_encode($data));
 function scanpath($path, $except = null, &$data = null)
