@@ -9,13 +9,26 @@ echo "\r\n=========================start time".date('Y-m-d H:i:s')."============
 error_reporting(7);
 $savepath='/root/';
 $path = '/www/web/www/public_html/';
-$except = ['js','css','jpg','zip','png','gif'];
+$except = ['js','css','jpg','jpeg','zip','png','gif'];
+$print_tips = true;
 $pre_data = unserialize(file_get_contents($savepath.'scan.dat'));
+
+
 $files = scanpath($path);
+if($print_tips){
+    echo "end scan.".count($files)." files.\r\n";
+}
+
 foreach ($files as $file){
     $temp = md5_file($file);
     if($temp)
         $data[$file] = $temp;
+    if($print_tips && count($data)%1000==0){
+        echo count($data)." files has computed hash.\r\n";
+    }
+}
+if($print_tips){
+    echo "\r\n end md5files.".count($data)." files.\r\n";
 }
 foreach($data as $key=>$value){
     if(empty($pre_data[$key])){
