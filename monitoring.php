@@ -9,6 +9,7 @@ echo "\r\n=========================start time".date('Y-m-d H:i:s')."============
 error_reporting(7);
 $savepath='/root/';
 $path = '/www/web/www/public_html/';
+$except = ['js','css','jpg','zip','png','gif'];
 $pre_data = unserialize(file_get_contents($savepath.'scan.dat'));
 $files = scanpath($path);
 foreach ($files as $file){
@@ -40,7 +41,7 @@ function scanpath($path, $except = null, &$data = null)
                 if (!in_array($path . $v . DIRECTORY_SEPARATOR, $except))
                     scanpath($path . $v . DIRECTORY_SEPARATOR, $except, $data);
             } else {
-                if (!in_array($path . $v, $except))
+                if (!in_array($path . $v, $except)&&!in_array(strtolower(end(explode('.',$v))), $except))
                     $data[] = $path . $v;
             }
         }
