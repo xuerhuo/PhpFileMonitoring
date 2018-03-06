@@ -9,12 +9,12 @@ echo "\r\n=========================start time".date('Y-m-d H:i:s')."============
 error_reporting(7);
 $savepath='/root/';
 $path = '/www/web/www/public_html/';
-$except = ['js','css','jpg','jpeg','zip','png','gif'];
+$except = ['js','css','jpg','jpeg','zip','png','gif','html','htm'];
 $print_tips = true;
 $pre_data = unserialize(file_get_contents($savepath.'scan.dat'));
 
 
-$files = scanpath($path);
+$files = scanpath($path,$except);
 if($print_tips){
     echo "end scan.".count($files)." files.\r\n";
 }
@@ -24,7 +24,7 @@ foreach ($files as $file){
     if($temp)
         $data[$file] = $temp;
     if($print_tips && count($data)%1000==0){
-        echo count($data)." files has computed hash.\r\n";
+        echo count($data)." files has computed hash. end file is ".$file."\r\n";
     }
 }
 if($print_tips){
