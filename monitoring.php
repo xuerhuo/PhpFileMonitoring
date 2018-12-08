@@ -5,7 +5,7 @@
  * Date: 2017/8/14
  * Time: 21:03
  */
-echo "\r\n=========================start time".date('Y-m-d H:i:s')."==============================\r\n";
+output("\r\n=========================start time".date('Y-m-d H:i:s')."==============================\r\n");
 error_reporting(7);
 $option['savepath'] = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $path = ['/www/web/xishui/public_html/'];
@@ -61,13 +61,13 @@ function checkFiles($paths,$except,$option){
     }else{
         output("file hash file not save\r\n");
     }
-    output('',$option['savepath'].date('YYYY-MM-dd.log',time()));
+    output('',$option['savepath'].'scan'.date('YmdHi',time()).'.log');
 }
 
 function output($str,$filename=null){
     static $ret;
     echo $str;
-    $ret.=$ret;
+    $ret.=$str;
     if ($filename){
         file_put_contents($filename,$ret);
     }
