@@ -7,8 +7,8 @@
  */
 echo "\r\n=========================start time".date('Y-m-d H:i:s')."==============================\r\n";
 error_reporting(7);
-$option['savepath'] = dirname(__FILE__);
-$path = ['/www/web/xishui/public_html/'];
+$option['savepath'] = dirname(__FILE__).DIRECTORY_SEPARATOR;
+$path = ['/www/web/xishui/public_html/config/'];
 $except = ['js','css','jpg','jpeg','zip','png','gif','html','htm','svg','_addons_'];
 checkFiles($path,$except,$option);
 
@@ -56,10 +56,10 @@ function checkFiles($paths,$except,$option){
     fwrite ( STDOUT , 'save the hash data：y/n' . PHP_EOL );
     $input = trim(fgets(STDIN));
     if($input=='y') {
-        file_put_contents($option['savepath'] . 'scan.dat', serialize($data));
-        fputs("hash saved.");
+        file_put_contents($scandat, serialize($data));
+        echo("file hash saved.\r\n");
     }else{
-        fputs("hash file not save");
+        echo("file hash file not save\r\n");
     }
 }
 
@@ -81,3 +81,4 @@ function scanpath($path, $except = null, &$data = null)
     }
     return $data;
 }
+
