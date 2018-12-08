@@ -17,7 +17,12 @@ checkFiles($path,$except,$option);
 function checkFiles($paths,$except,$option){
     $print_tips = true;
     $files = [];
-    $pre_data = unserialize(file_get_contents($option['savepath'].'scan.dat'));
+    $scandat = $option['savepath'].'scan.dat';
+    if(file_exists($scandat)) {
+        $pre_data = unserialize(file_get_contents($option['savepath'] . 'scan.dat'));
+    }else{
+        $pre_data = [];
+    }
     foreach ($paths as $path){
         $files = array_merge($files,scanpath($path,$except));
         if($print_tips){
