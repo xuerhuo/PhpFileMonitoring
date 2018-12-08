@@ -8,7 +8,7 @@
 echo "\r\n=========================start time".date('Y-m-d H:i:s')."==============================\r\n";
 error_reporting(7);
 $option['savepath'] = dirname(__FILE__).DIRECTORY_SEPARATOR;
-$path = ['/www/web/xishui/public_html/config/'];
+$path = ['/www/web/xishui/public_html/'];
 $except = ['js','css','jpg','jpeg','zip','png','gif','html','htm','svg','_addons_'];
 checkFiles($path,$except,$option);
 
@@ -26,7 +26,7 @@ function checkFiles($paths,$except,$option){
     foreach ($paths as $path){
         $files = array_merge($files,scanpath($path,$except));
         if($print_tips){
-            echo "end scan.".count($files)." files.\r\n";
+            output("end scan.".count($files)." files.\r\n");
         }
     }
     foreach ($files as $file){
@@ -34,35 +34,44 @@ function checkFiles($paths,$except,$option){
         if($temp)
             $data[$file] = $temp;
         if($print_tips && count($data)%1000==0){
-            echo count($data)." files has computed hash. end file is ".$file."\r\n";
+            output(count($data)." files has computed hash. end file is ".$file."\r\n");
         }
     }
     if($print_tips){
-        echo "\r\n end md5files.".count($data)." files.\r\n";
+        output("\r\n end md5files.".count($data)." files.\r\n");
     }
     foreach($data as $key=>$value){
         if(empty($pre_data[$key])){
-            echo date("Y-m-d H:i:s",time())."create:".$key."\r\n";
+            output(date("Y-m-d H:i:s",time())."create:".$key."\r\n");
             continue;
         }elseif($value!=$pre_data[$key]){
-            echo date("Y-m-d H:i:s",time())."modify:".$key."\r\n";
+            output(date("Y-m-d H:i:s",time())."modify:".$key."\r\n");
         }
     }
     foreach($pre_data as $key=>$value){
         if(empty($data[$key])){
-            echo date("Y-m-d H:i:s",time())."deleteed:".$key."\r\n";
+            output(date("Y-m-d H:i:s",time())."deleteed:".$key."\r\n");
         }
     }
     fwrite ( STDOUT , 'save the hash data：y/n' . PHP_EOL );
     $input = trim(fgets(STDIN));
     if($input=='y') {
         file_put_contents($scandat, serialize($data));
-        echo("file hash saved.\r\n");
+        output("file hash saved.\r\n");
     }else{
-        echo("file hash file not save\r\n");
+        output("file hash file not save\r\n");
     }
+    output('',$option['savepath'].date('YYYY-MM-dd.log',time()));
 }
 
+function output($str,$filename=null){
+    static $ret;
+    echo $str;
+    $ret.=$ret;
+    if ($filename){
+        file_put_contents($filename,$ret);
+    }
+}
 
 function scanpath($path, $except = null, &$data = null)
 {
